@@ -64,7 +64,7 @@ var _toLower = function(obj){
 var _getVoiceOverForWord = function(word){
 	word = word.replace(/'/g, '_');
 	word = word.toLowerCase();
-	return data;
+	return "spelling:" + word;
 };
 
 var _getWords = function(str){
