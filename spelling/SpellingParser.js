@@ -8,6 +8,7 @@ var SpellingQuestionMaker = 		require("./SpellingQuestionMaker");
 var Utils =      					require("../utils/Utils");
 var fs = 							require("fs");
 var path = 							require("path");
+var CategoryXML = 					require("./CategoryXML");
 var csv = 							require('csvtojson');
 var iconvlite =						require('iconv-lite');
 
@@ -15,7 +16,30 @@ var SpellingParser = function(){
 	
 };
 
-SpellingParser.prototype.makeFiles = function(str){
+SpellingParser.prototype.makeCategoryXML = function(year){
+	return Promise.resolve(CategoryXML.getXML(year));
+};
+
+SpellingParser.prototype.makeAllFiles = function(str, year){
+	var appXML = [];
+	var deferred = new Deferred();
+	this.makeQuizFiles(str)
+	.then(function(files){
+		_.each(files, function(file){
+			console.log(file);
+			appXML.push("<test>");
+		});
+	});
+	return Promise.all([
+		this.makeCategoryXML(year),
+		this.makeAppXMLS(str),
+		this.makeQuizFiles(str)
+	]);
+};
+
+SpellingParser.prototype.makeAppXMLS
+
+SpellingParser.prototype.makeQuizFiles = function(str){
 	var _this = this;
 	this.files = [];
 	var deferred = new Deferred();
@@ -38,10 +62,14 @@ var _readFileSync_encoding = function(filename, encoding) {
 };
 
 SpellingParser.prototype.parseCSV = function(csvFile){
-	var str, json;
+	var str, json, year;
+	year = parseInt(csvFile.name.match(/[0-9]+/g)[0], 10);
+	if(_.range(1, 7).indexOf(year) === -1){
+		return Promise.reject("unable to get year");
+	}
 	str = _readFileSync_encoding(csvFile.path, "utf8");
 	try{
-		return this.makeFiles(str);
+		return this.makeAllFiles(str, year);
 	}
 	catch(e){
 		console.log(e);

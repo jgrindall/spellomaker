@@ -20,7 +20,8 @@
 		"adm-zip":"latest",
 		"atob":"latest",
 		"csvtojson":"latest",
-		"iconv-lite":"latest"
+		"iconv-lite":"latest",
+        "xmljson":"latest"
   	}
 }
 

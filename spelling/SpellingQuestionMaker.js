@@ -61,10 +61,10 @@ var _toLower = function(obj){
 	return obj2;
 };
 
-var _getVoiceOverForWord = function(word){
+var _getVoiceOverForWord = function(word, options){
 	word = word.replace(/'/g, '_');
 	word = word.toLowerCase();
-	return "spelling:" + word;
+	return "spelling_" + options.year + ":" + word;
 };
 
 var _getWords = function(str){
@@ -115,7 +115,7 @@ SpellingQuestionMaker.makeQues = function(word, id, options){
 				"tileStyle": options.tileStyle || "plastic",
 				"upperCase": false,
 				"extras": {
-					"voiceover": _getVoiceOverForWord(word)
+					"voiceover": _getVoiceOverForWord(word, options)
 				}
 			}
 		},
@@ -144,7 +144,8 @@ SpellingQuestionMaker.make = function(row){
 			var options = {
 				timeAnimation:row["default time"],
 				answerStyle:row["input mode"],
-				tileStyle:"plastic"
+				tileStyle:"plastic",
+				year:row.year
 			};
 			json.questions.push(SpellingQuestionMaker.makeQues(word, id, options));
 			json.order.edges.push(["" + id, "" + (id + 1)]); // strings!

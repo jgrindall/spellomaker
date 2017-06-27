@@ -10,7 +10,15 @@ var _removeWhiteSpace = function(str){
 };
 
 module.exports = {
-	"output":function(res, files){
+	"output":function(res, categoryXML, appXMLs, quizFiles){
+		console.log(categoryXML);
+		console.log(quizFiles);
+		res.writeHead(200);
+		res.write("ok");
+		res.end();
+		
+		
+		return;
 		var zip = new AdmZip();
 		console.log("zip #= ", files.length);
 		_.each(files, function(file, i){

@@ -6,8 +6,10 @@ var path =           	require("path");
 var Utils = 			require("./utils/Utils");
 var SpellingOutput =    require("./SpellingOutput");
 var SpellingParser = 	require("./spelling/SpellingParser");
+var CategoryXML = 		require("./spelling/CategoryXML");
 var AdmZip = 			require('adm-zip');
 var app = 				express();
+var XMLJSON = 			require('xmljson');
 var port = 				Number(process.env.PORT || 5000);
 
 app.configure(function(){
@@ -40,6 +42,22 @@ app.get('/', function(req, res) {
 });
 
 app.listen(port, function() {
-   console.log("Listening on " + port);
+	console.log("Listening on " + port);   
+	/*
+XMLJSON.to_json(xml, function (error, data) {
+    console.log("data", data);
+	XMLJSON.to_xml(JSON.stringify(data), function (error, data2) {
+	    console.log("data2", data2);
+	});
+});
+
+XMLJSON.to_xml(json, function (error, xml) {
+    console.log("xml", xml);
+	XMLJSON.to_json(xml, function (error, data3) {
+	    console.log("data3", data3);
+	});
+});
+	*/
+	
 });
 
