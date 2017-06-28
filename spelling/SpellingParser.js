@@ -24,7 +24,8 @@ SpellingParser.prototype.makeCategoryXML = function(){
 SpellingParser.prototype.makeAllFiles = function(str){
 	return Promise.all([
 		this.makeCategoryXML(this.year),
-		this.makeApps(str)
+		this.makeApps(str),
+		Promise.resolve({"year":this.year})
 	]);
 };
 
@@ -68,8 +69,8 @@ SpellingParser.prototype.makeApps = function(str){
 					"install":AppXML.getPrintable(file.row),
 					"fileName":printableFileName,
 					"inc":[
-						"img/quiz_wk" + file.row.week + "_help-en_gb.png",
-						"img/quiz_wk" + file.row.week + "_icon-en_gb.png",
+						"img/Wk" + file.row.week + "_LSCWC_help-en_gb.png",
+						"img/Wk" + file.row.week + "_LSCWC_icon-en_gb.png",
 						"pdf/Year" + file.row.year + file.row.term + "Week" + file.row.week + "LSCWC.pdf"
 					]
 				}

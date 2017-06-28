@@ -27,12 +27,13 @@ app.post('/upload', function(req, res) {
 			res.send('Errrrrr I didnt get any csv files!');
 		}
 		else{
+			var file = filesArray[0];
 			new SpellingParser()
-			.parseCSV(filesArray[0])
-			.then(_.partial(SpellingOutput.output, res))
+			.parseCSV(file)
+			.then(_.partial(SpellingOutput.output, res, file))
 			.catch(function(e){
 				res.status(500);
-				res.send('An error occurred sorry. Dunno what exactly.' + e);
+				res.send('An error occurred sorry.' + e);
 			});
 		}
     });

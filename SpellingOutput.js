@@ -1,7 +1,6 @@
 /* not stricty because of the weird octal thing */
 
 var _ = 				require("underscore");
-var AdmZip = 			require('adm-zip');
 var archiver = 			require('archiver');
 var fs = 				require("fs");
 var path = 				require('path');
@@ -54,36 +53,46 @@ var _copySync = function(from, to) {
 	}
 };
 
-var _cleanUp = function(){
+var _cleanUp = function(fileName){
 	// clean up
-	_removeFile("all.zip");
+	//console.log("cleanup", fileName);
+	//_removeFile(fileName);
 	_forceRemoveDir("./tmp");
 	fs.mkdirSync("./tmp");
 	fs.mkdirSync("./tmp/applications");
 };
 
 module.exports = {
-	"output":function(res, data){
-		_cleanUp();
-		var output = fs.createWriteStream('all.zip');
+	"output":function(res, file, data){
+		var categoryXML = data[0];
+		var appData = data[1];
+		var date = new Date().toJSON();
+		date = ("" + date).replace(/:/g, '_');
+		date = ("" + date).replace(/\./g, '_');
+		var fileName = file.name.split(".")[0].replace(/\s/g,'').trim() + "_" + date + ".zip";
+		console.log(fileName);
+		var output = fs.createWriteStream(fileName);
 		var archive = archiver('zip', {store: true});
+		_cleanUp(fileName);
 		output.on('close', function() {
-		  	res.set("Content-Disposition", "attachment;filename=all.zip");
-			res.setHeader('Content-disposition', 'attachment; filename=all.zip');
-			return res.download("all.zip", "all.zip"); 
+			console.log("close");
+		  	res.set("Content-Disposition", "attachment;filename=" + fileName);
+			res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
+			console.log("download", fileName);
+			return res.download(fileName, fileName); 
 		});
 		archive.on('error', function(err) {
 		  	throw err;
 		});
-		var categoryXML = data[0];
-		var appData = data[1];
 		// create the category stuff
+		console.log("add category");
 		archive.append(categoryXML, { name: 'install.xml' });
 		archive.append(fs.createReadStream("./inc/img/spelling-_year_1_help-en_gb.png"), { name: 'spelling-_year_1_help-en_gb.png' });
 		archive.append(fs.createReadStream("./inc/img/spelling-_year_1_icon-en_gb.png"), { name: 'spelling-_year_1_icon-en_gb.png' });
 		// create the applications in the tmp folder
-		_.each(appData, function(app, N){
+		_.each(appData, function(app){
 			var dirName;
+			console.log("add app");
 			if(app.quiz){
 				dirName = "./tmp/applications/" + app.quiz.fileName.split(".")[0];
 				fs.mkdirSync(dirName);
@@ -110,6 +119,7 @@ module.exports = {
 				});
 			}
 		});
+		console.log("add application folder");
 		//add the entire folder
 		archive.directory('./tmp/applications/', './applications');
 		archive.finalize();
@@ -121,60 +131,5 @@ module.exports = {
 		res.end();
 	}
 };
-
-
-
-
-
-/***
-
-var archiver = require('archiver');
- 
-// create a file to stream archive data to. 
-var output = fs.createWriteStream(__dirname + '/example.zip');
-var archive = archiver('zip', {
-    store: true // Sets the compression method to STORE. 
-});
- 
-output.on('close', function() {
-  console.log(archive.pointer() + ' total bytes');
-  console.log('archiver has been finalized and the output file descriptor has closed.');
-});
- 
-archive.on('error', function(err) {
-  throw err;
-});
- 
-archive.pipe(output);
- 
-// append a file from stream 
-var file1 = __dirname + '/file1.txt';
-archive.append(fs.createReadStream(file1), { name: 'file1.txt' });
- 
-// append a file from string 
-archive.append('string cheese!', { name: 'file2.txt' });
- 
-// append a file from buffer 
-var buffer3 = new Buffer('buff it!');
-archive.append(buffer3, { name: 'file3.txt' });
- 
-// append a file 
-archive.file('file1.txt', { name: 'file4.txt' });
- 
-// append files from a directory 
-archive.directory('subdir/');
- 
-// append files from a glob pattern 
-archive.glob('subdir/*.txt');
- 
-// finalize the archive (ie we are done appending files but streams have to finish yet) 
-archive.finalize();
-
-
-***/
-
-
-
-
 
 
