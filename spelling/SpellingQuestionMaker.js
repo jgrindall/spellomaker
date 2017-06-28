@@ -85,7 +85,9 @@ var _getWords = function(str){
 };
 
 var _getFileName = function(row){
-	return "y" + row.year.trim() + "_" + row.term.trim() + "_" + row.week.trim() + "_" + row.day.trim() + ".2quiz";
+	var f = "y" + row.year.trim() + "_" + row.term.trim() + "_Week " + row.week.trim() + "_" + row.day.trim() + ".2quiz";
+	f = f.replace(/\s/g,'').trim(); 
+	return f;
 };
 
 var SpellingQuestionMaker = function(){
@@ -154,7 +156,8 @@ SpellingQuestionMaker.make = function(row){
 		var newName = _getFileName(row);
 		return {
 			"name":newName,
-			"json":json
+			"json":json,
+			"row":row
 		};
 	}
 };

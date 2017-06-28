@@ -6,6 +6,7 @@ var path =           	require("path");
 var Utils = 			require("./utils/Utils");
 var SpellingOutput =    require("./SpellingOutput");
 var SpellingParser = 	require("./spelling/SpellingParser");
+var fs = 				require("fs");
 var CategoryXML = 		require("./spelling/CategoryXML");
 var AdmZip = 			require('adm-zip');
 var app = 				express();
@@ -29,9 +30,9 @@ app.post('/upload', function(req, res) {
 			new SpellingParser()
 			.parseCSV(filesArray[0])
 			.then(_.partial(SpellingOutput.output, res))
-			.catch(function(){
+			.catch(function(e){
 				res.status(500);
-				res.send('An error occurred sorry. Dunno what exactly.');
+				res.send('An error occurred sorry. Dunno what exactly.' + e);
 			});
 		}
     });

@@ -9,6 +9,7 @@ var Utils =      					require("../utils/Utils");
 var fs = 							require("fs");
 var path = 							require("path");
 var CategoryXML = 					require("./CategoryXML");
+var AppXML = 						require("./AppXML");
 var csv = 							require('csvtojson');
 var iconvlite =						require('iconv-lite');
 
@@ -16,28 +17,66 @@ var SpellingParser = function(){
 	
 };
 
-SpellingParser.prototype.makeCategoryXML = function(year){
-	return Promise.resolve(CategoryXML.getXML(year));
+SpellingParser.prototype.makeCategoryXML = function(){
+	return Promise.resolve(CategoryXML.getXML(this.year));
 };
 
-SpellingParser.prototype.makeAllFiles = function(str, year){
-	var appXML = [];
-	var deferred = new Deferred();
-	this.makeQuizFiles(str)
-	.then(function(files){
-		_.each(files, function(file){
-			console.log(file);
-			appXML.push("<test>");
-		});
-	});
+SpellingParser.prototype.makeAllFiles = function(str){
 	return Promise.all([
-		this.makeCategoryXML(year),
-		this.makeAppXMLS(str),
-		this.makeQuizFiles(str)
+		this.makeCategoryXML(this.year),
+		this.makeApps(str)
 	]);
 };
 
-SpellingParser.prototype.makeAppXMLS
+SpellingParser.prototype.makeApps = function(str){
+	var apps = [], deferred = new Deferred();
+	this.makeQuizFiles(str)
+	.then(function(data){
+		_.each(data, function(file){
+			var dictationFileName = "Year {{YEAR}} {{TERM}} Week {{WEEK}} Dictations.pdf";
+			dictationFileName = dictationFileName
+			.replace(/{{YEAR}}/g, file.row.year)
+		    .replace(/{{TERM}}/g, file.row.term)
+		    .replace(/{{WEEK}}/g, file.row.week);
+			var printableFileName = "Year {{YEAR}} {{TERM}} Week {{WEEK}} LSCWC.pdf";
+			printableFileName = printableFileName
+			.replace(/{{YEAR}}/g, file.row.year)
+		    .replace(/{{TERM}}/g, file.row.term)
+		    .replace(/{{WEEK}}/g, file.row.week);
+			apps.push({
+				"quiz":{
+					"fileName":file.name,
+					"fileContents":file.json,
+					"install":AppXML.getQuiz(file.row),
+					"inc":[
+						"img/quiz_wk" + file.row.week + "_help-en_gb.png",
+						"img/quiz_wk" + file.row.week + "_icon-en_gb.png"
+					]
+				},
+				"dictation":{
+					"install":AppXML.getDictation(file.row),
+					"fileName":dictationFileName,
+					"inc":[
+						"img/Wk" + file.row.week + "_Dictation_help-en_gb.png",
+						"img/Wk" + file.row.week + "_Dictation_icon-en_gb.png",
+						"pdf/Year " + file.row.year + " " + file.row.term + " Week " + file.row.week + " Dictations.pdf"
+					]
+				},
+				"printable":{
+					"install":AppXML.getPrintable(file.row),
+					"fileName":printableFileName,
+					"inc":[
+						"img/quiz_wk" + file.row.week + "_help-en_gb.png",
+						"img/quiz_wk" + file.row.week + "_icon-en_gb.png",
+						"pdf/Year " + file.row.year + " " + file.row.term + " Week " + file.row.week + " LSCWC.pdf"
+					]
+				}
+			});
+		});
+		deferred.resolve(apps);
+	});
+	return deferred.promise;
+};
 
 SpellingParser.prototype.makeQuizFiles = function(str){
 	var _this = this;
@@ -62,14 +101,14 @@ var _readFileSync_encoding = function(filename, encoding) {
 };
 
 SpellingParser.prototype.parseCSV = function(csvFile){
-	var str, json, year;
-	year = parseInt(csvFile.name.match(/[0-9]+/g)[0], 10);
-	if(_.range(1, 7).indexOf(year) === -1){
+	var str;
+	this.year = parseInt(csvFile.name.match(/[0-9]+/g)[0], 10);
+	if(_.range(1, 7).indexOf(this.year) === -1){
 		return Promise.reject("unable to get year");
 	}
 	str = _readFileSync_encoding(csvFile.path, "utf8");
 	try{
-		return this.makeAllFiles(str, year);
+		return this.makeAllFiles(str);
 	}
 	catch(e){
 		console.log(e);

@@ -1,97 +1,80 @@
 "use strict";
 
-var AppXML = function(){
-    
-};
+var DICTATION = '<?xml version="1.0" encoding="UTF-8"?>'
++ '<plugin>'
++ '<name>Spelling_Y{{YEAR}}_{{TERM}}_Week{{WEEK}}_Dictation</name>'
++ '<folder>guides</folder>'
++ '<iconfilename>icon.png</iconfilename>'
++ '<imagefilename>User-Guide-Icons.png</imagefilename>'
++ '<launcher>link</launcher>'
++ '<link>Year {{YEAR}} {{TERM}} Week {{WEEK}} Dictations.pdf</link>'
++ '<params>sharedLinkMode=1</params>'
++ '<activated>1</activated>'
++ '<role>2</role>'
++ '<beta>1</beta>'
++ '<statstag>generic</statstag>'
++ '<searchable>1</searchable>'
++ '<allow_2do>1</allow_2do>'
++ '<mainsubject>literacy</mainsubject>'
++ '<allowguest>1</allowguest>'
++ '<languages>'
++ '<en_gb>'
++ '<title>Week {{WEEK}} - Dictation</title>'
++ '<description>Dictation for weekly spellings with pupil page and answer page.</description>'
++ '<keywords>dictation, year {{YEAR}}, y{{YEAR}}, {{TERM}}, spelling</keywords>'
++ '<yeargroups/>'
++ '<subjects>en</subjects>'
++ '<apppath/>'
++ '<activityname/>'
++ '<presentation/>'
++ '<iconfilename>Week{{WEEK}}_Dictation_icon-en_gb.png</iconfilename>'
++ '<imagefilename>Week{{WEEK}}_Dictation_help-en_gb.png</imagefilename>'
++ '<largeiconimage/>'
++ '</en_gb>'
++ '</languages>'
++ '<bundles>Package A</bundles>'
++ '<imagemarkers>[]</imagemarkers>'
++ '</plugin>';
 
-AppXML.getDictation = function(year, term, week){
-    var termShort = "short";
-    var s = '<name>Spelling_Y{{YEAR}}_{{TERM_SHORT}}_Wk{{WEEK}}_Dictation</name>'
-    + '<folder>guides</folder>'
-    + '<iconfilename>icon.png</iconfilename>'
-    + '<imagefilename>User-Guide-Icons.png</imagefilename>'
-    + '<launcher>link</launcher>'
-    + '<link>Year {{YEAR}} {{TERM}} Week {{WEEK}} Dictations.pdf</link>'
-    + '<params>sharedLinkMode=1</params>'
-    + '<activated>1</activated>'
-    + '<role>2</role>'
-    + '<beta>1</beta>'
-    + '<statstag>generic</statstag>'
-    + '<searchable>1</searchable>'
-    + '<allow_2do>1</allow_2do>'
-    + '<mainsubject>literacy</mainsubject>'
-    + '<allowguest>1</allowguest>'
-    + '<languages>'
-    + '<en_gb>'
-    + '<title>Week {{WEEK}} - Dictation</title>'
-    + '<description>Dictation for weekly spellings with pupil page and answer page.</description>'
-    + '<keywords>dictation, year {{YEAR}}, y{{YEAR}}, {{TERM}}, spelling</keywords>'
-    + '<yeargroups/>'
-    + '<subjects>en</subjects>'
-    + '<apppath/>'
-    + '<activityname/>'
-    + '<presentation/>'
-    + '<iconfilename>Wk{{WEEK}}_Dictation_icon-en_gb.png</iconfilename>'
-    + '<imagefilename>Wk{{WEEK}}_Dictation_help-en_gb.png</imagefilename>'
-    + '<largeiconimage/>'
-    + '</en_gb>'
-    + '</languages>'
-    + '<bundles>Package A</bundles>'
-    + '<imagemarkers></imagemarkers>';
-    
-    return s
-    .replace(/{{YEAR}}/g, year)
-    .replace(/{{TERM}}/g, term)
-    .replace(/{{TERM_SHORT}}/g, termShort);
-    .replace(/{{WEEK}}/g, week);
-    
-};
+var PRINTABLE = '<?xml version="1.0" encoding="UTF-8"?>'
++ '<plugin>'
++ '<name>Spelling_Y{{YEAR}}_{{TERM}}_Week{{WEEK}}</name>'
++ '<folder>guides</folder>'
++ '<iconfilename>icon.png</iconfilename>'
++ '<imagefilename>User-Guide-Icons.png</imagefilename>'
++ '<launcher>link</launcher>'
++ '<link>Year {{YEAR}} {{TERM}} Week {{WEEK}} LSCWC.pdf</link>'
++ '<params>sharedLinkMode=1</params>'
++ '<activated>1</activated>'
++ '<role>2</role>'
++ '<beta>1</beta>'
++ '<statstag>generic</statstag>'
++ '<searchable>1</searchable>'
++ '<allow_2do>1</allow_2do>'
++ '<mainsubject>literacy</mainsubject>'
++ '<allowguest>1</allowguest>'
++ '<languages>'
++ '<en_gb>'
++ '<title>Week {{WEEK}} - LSCWC</title>'
++ '<description>Look Say Write Cover and Check printable for pupils</description>'
++ '<keywords>LSCWC, Look, Say, Write, Cover, Check, spellings</keywords>'
++ '<yeargroups/>'
++ '<subjects>en</subjects>'
++ '<apppath/>'
++ '<activityname/>'
++ '<presentation/>'
++ '<iconfilename>Week{{WEEK}}_LSCWC_icon-en_gb.png</iconfilename>'
++ '<imagefilename>Week{{WEEK}}_LSCWC_help-en_gb.png</imagefilename>'
++ '<largeiconimage/>'
++ '</en_gb>'
++ '</languages>'
++ '<bundles>Package A</bundles>'
++ '<imagemarkers>[]</imagemarkers>'
++ '</plugin>';
 
-
-AppXML.getPrintable = function(year, term, week){
-    var s = '<name>Spelling_Y{{YEAR}}_{{TERM}}_Wk{{WEEK}}_Dictation</name>'
-    + '<folder>guides</folder>'
-    + '<iconfilename>icon.png</iconfilename>'
-    + '<imagefilename>User-Guide-Icons.png</imagefilename>'
-    + '<launcher>link</launcher>'
-    + '<link>Year {{YEAR}} {{TERM}} Week {{WEEK}} Dictations.pdf</link>'
-    + '<params>sharedLinkMode=1</params>'
-    + '<activated>1</activated>'
-    + '<role>2</role>'
-    + '<beta>1</beta>'
-    + '<statstag>generic</statstag>'
-    + '<searchable>1</searchable>'
-    + '<allow_2do>1</allow_2do>'
-    + '<mainsubject>literacy</mainsubject>'
-    + '<allowguest>1</allowguest>'
-    + '<languages>'
-    + '<en_gb>'
-    + '<title>Week {{WEEK}} - Dictation</title>'
-    + '<description>Dictation for weekly spellings with pupil page and answer page.</description>'
-    + '<keywords>dictation, year {{YEAR}}, y{{YEAR}}, {{TERM}}, spelling</keywords>'
-    + '<yeargroups/>'
-    + '<subjects>en</subjects>'
-    + '<apppath/>'
-    + '<activityname/>'
-    + '<presentation/>'
-    + '<iconfilename>Wk{{WEEK}}_Dictation_icon-en_gb.png</iconfilename>'
-    + '<imagefilename>Wk{{WEEK}}_Dictation_help-en_gb.png</imagefilename>'
-    + '<largeiconimage/>'
-    + '</en_gb>'
-    + '</languages>'
-    + '<bundles>Package A</bundles>'
-    + '<imagemarkers></imagemarkers>';
-    
-    return s
-    .replace(/{{YEAR}}/g, year)
-    .replace(/{{TERM}}/g, term)
-    .replace(/{{WEEK}}/g, week);
-    
-};
-
-
-AppXML.getQuiz = function(year, term, week){
-    var s = '<name>y{{YEAR}}_{{TERM}}_Week{{WEEK}}_Week</name>'
+var QUIZ = '<?xml version="1.0" encoding="UTF-8"?>'
++ '<plugin>'
++ '<name>y{{YEAR}}_{{TERM}}_Week{{WEEK}}_Week</name>'
 + '<folder>diyjs</folder>'
 + '<iconfilename>icon.png</iconfilename>'
 + '<imagefilename>help.png</imagefilename>'
@@ -120,16 +103,36 @@ AppXML.getQuiz = function(year, term, week){
 + '</en_gb>'
 + '</languages>'
 + '<bundles>Package A</bundles>'
-+ '<imagemarkers>[]</imagemarkers>';
-    
-    return s
-    .replace(/{{YEAR}}/g, year)
-    .replace(/{{TERM}}/g, term)
-    .replace(/{{TERM_SHORT}}/g, termShort);
-    .replace(/{{WEEK}}/g, week);
++ '<imagemarkers>[]</imagemarkers>'
++ '</plugin>';
+
+var AppXML = function(){
     
 };
 
+AppXML.getDictation = function(row){
+    var clone = "" + DICTATION;
+    return clone
+    .replace(/{{YEAR}}/g, row.year.replace(/\s/g,'').trim())
+    .replace(/{{TERM}}/g, row.term.replace(/\s/g,'').trim())
+    .replace(/{{WEEK}}/g, row.week.replace(/\s/g,'').trim());
+};
+
+AppXML.getPrintable = function(row){
+    var clone = "" + PRINTABLE;
+    return clone
+    .replace(/{{YEAR}}/g, row.year.replace(/\s/g,'').trim())
+    .replace(/{{TERM}}/g, row.term.replace(/\s/g,'').trim())
+    .replace(/{{WEEK}}/g, row.week.replace(/\s/g,'').trim());
+};
+
+AppXML.getQuiz = function(row){
+    var clone = "" + QUIZ;
+    return clone
+    .replace(/{{YEAR}}/g, row.year.replace(/\s/g,'').trim())
+    .replace(/{{TERM}}/g, row.term.replace(/\s/g,'').trim())
+    .replace(/{{WEEK}}/g, row.week.replace(/\s/g,'').trim());
+};
 
 module.exports = AppXML;
 

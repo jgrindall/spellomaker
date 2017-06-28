@@ -21,7 +21,8 @@
 		"atob":"latest",
 		"csvtojson":"latest",
 		"iconv-lite":"latest",
-        "xmljson":"latest"
+        "xmljson":"latest",
+        "archiver":"latest"
   	}
 }
 
