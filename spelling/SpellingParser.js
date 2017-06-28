@@ -33,12 +33,14 @@ SpellingParser.prototype.makeApps = function(str){
 	this.makeQuizFiles(str)
 	.then(function(data){
 		_.each(data, function(file){
-			var dictationFileName = "Year {{YEAR}} {{TERM}} Week {{WEEK}} Dictations.pdf";
+			var dictationFileName = "Year{{YEAR}}{{TERM}}Week{{WEEK}}Dictations.pdf";
+			file.row.year = file.row.year.replace(/\s/g,'').trim();
+			file.row.term = file.row.term.replace(/\s/g,'').trim();
 			dictationFileName = dictationFileName
 			.replace(/{{YEAR}}/g, file.row.year)
 		    .replace(/{{TERM}}/g, file.row.term)
 		    .replace(/{{WEEK}}/g, file.row.week);
-			var printableFileName = "Year {{YEAR}} {{TERM}} Week {{WEEK}} LSCWC.pdf";
+			var printableFileName = "Year{{YEAR}}{{TERM}}Week{{WEEK}}LSCWC.pdf";
 			printableFileName = printableFileName
 			.replace(/{{YEAR}}/g, file.row.year)
 		    .replace(/{{TERM}}/g, file.row.term)
@@ -59,7 +61,7 @@ SpellingParser.prototype.makeApps = function(str){
 					"inc":[
 						"img/Wk" + file.row.week + "_Dictation_help-en_gb.png",
 						"img/Wk" + file.row.week + "_Dictation_icon-en_gb.png",
-						"pdf/Year " + file.row.year + " " + file.row.term + " Week " + file.row.week + " Dictations.pdf"
+						"pdf/Year" + file.row.year + file.row.term + "Week" + file.row.week + "Dictations.pdf"
 					]
 				},
 				"printable":{
@@ -68,7 +70,7 @@ SpellingParser.prototype.makeApps = function(str){
 					"inc":[
 						"img/quiz_wk" + file.row.week + "_help-en_gb.png",
 						"img/quiz_wk" + file.row.week + "_icon-en_gb.png",
-						"pdf/Year " + file.row.year + " " + file.row.term + " Week " + file.row.week + " LSCWC.pdf"
+						"pdf/Year" + file.row.year + file.row.term + "Week" + file.row.week + "LSCWC.pdf"
 					]
 				}
 			});
