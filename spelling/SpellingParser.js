@@ -85,14 +85,17 @@ SpellingParser.prototype.makeQuizFiles = function(str){
 	var _this = this;
 	this.files = [];
 	var deferred = new Deferred();
+	console.log("STR", str);
 	csv().fromString(str)
 	.on('json', function(row){
+		console.log(row);
 		var data = SpellingQuestionMaker.make(row);
 		if(data){
 			_this.files.push(data);
 		}
 	})
 	.on('done', function(){
+		console.log("DONE");
 		return deferred.resolve(_this.files);
 	});
 	return deferred.promise;
@@ -103,7 +106,7 @@ var _readFileSync_encoding = function(filename, encoding) {
 	return iconvlite.decode(content, encoding);
 };
 
-SpellingParser.prototype.parseCSV = function(csvFile){
+SpellingParser.prototype.parseCSV = function(csvFile, options){
 	var str;
 	this.year = parseInt(csvFile.name.match(/[0-9]+/g)[0], 10);
 	if(_.range(1, 7).indexOf(this.year) === -1){
@@ -111,7 +114,12 @@ SpellingParser.prototype.parseCSV = function(csvFile){
 	}
 	str = _readFileSync_encoding(csvFile.path, "utf8");
 	try{
-		return this.makeAllFiles(str);
+		if(options && options.jsononly){
+			return this.makeQuizFiles(str);
+		}
+		else{
+			return this.makeAllFiles(str);
+		}
 	}
 	catch(e){
 		console.log(e);

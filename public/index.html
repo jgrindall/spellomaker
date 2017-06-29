@@ -34,6 +34,11 @@
 				font-size:48px;
 				color:#666;
 			}
+			input[type=radio]{
+				transform-origin:center center;
+				transform: scale(1.75);
+				margin-right: 15px;
+			}
 		</style>
 	</head>
 	<body>
@@ -45,6 +50,12 @@
 			<br/>
 			<br/>
 			<input id="upload-input" type="file" name="upload" multiple="multiple"></input>
+			<br/>
+			<br/>
+			<input type="radio" name="jsononly" value="yes">Only the JSON files please</input>
+			<br/>
+			<br/>
+			<input type="radio" name="jsononly" checked selected="selected" value="no">JSON files and complete zip archive for category</input>
 			<br/>
 			<br/>
 			<input type="submit" value="submit">

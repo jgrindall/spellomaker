@@ -21,6 +21,7 @@ app.post('/upload', function(req, res) {
 	var form = new formidable.IncomingForm();
 	form.multiples = true;
 	form.parse(req, function(err, fields, files) {
+		var jsononly = (fields && fields.jsononly === "yes");
 		var filesArray = _.filter(Utils.arrayify(files.upload), Utils.isCorrectExtension);
 		if(!filesArray || filesArray.length !== 1){
 			res.status(500);
@@ -28,9 +29,10 @@ app.post('/upload', function(req, res) {
 		}
 		else{
 			var file = filesArray[0];
+			var options = {"jsononly":jsononly};
 			new SpellingParser()
-			.parseCSV(file)
-			.then(_.partial(SpellingOutput.output, res, file))
+			.parseCSV(file, options)
+			.then(_.partial(SpellingOutput.output, res, file, options))
 			.catch(function(e){
 				res.status(500);
 				res.send('An error occurred sorry.' + e);
